@@ -2,6 +2,7 @@ const Record = require('../models/recordModel');
 const APIFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
+const checkIFAllowed = require('../utils/checkIfAllowed');
 
 exports.getRecord = catchAsync(async (req, res, next) => {
   const record = await Record.findById(req.params.id);
@@ -38,6 +39,11 @@ exports.getAllRecords = catchAsync(async (req, res) => {
 });
 
 exports.createRecord = catchAsync(async (req, res, next) => {
+  // Check if new record contains any invalid fields
+  if (!checkIFAllowed(req.body)) {
+    return next(new AppError('Record contains invalid fields!', 400));
+  }
+
   const newRecord = await Record.create(req.body);
 
   res.status(201).json({
@@ -49,23 +55,19 @@ exports.createRecord = catchAsync(async (req, res, next) => {
 });
 
 exports.updateRecord = catchAsync(async (req, res, next) => {
+  // Check if there is any invalid field or field which cannot be updated
+  if (!checkIFAllowed(req.body)) {
+    return next(new AppError('Invalid fields or cannot be updated', 400));
+  }
+
   const record = await Record.findById(req.params.id);
 
   if (!record) {
     return next(new AppError('No record found with this ID!', 404));
   }
 
-  const allowedFields = [
-    'idNum',
-    'name',
-    'lastName',
-    'dateOfBirth',
-    'dateOfIssue',
-    'dateOfExpiry'
-  ];
-
   Object.keys(req.body).forEach(el => {
-    if (allowedFields.includes(el)) record[el] = req.body[el];
+    record[el] = req.body[el];
   });
   record.save();
 
