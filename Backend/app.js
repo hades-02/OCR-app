@@ -7,6 +7,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 
 const AppError = require('./utils/appError');
+const recordRoutes = require('./routes/recordRoutes');
 //const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
@@ -55,7 +56,7 @@ app.use((req, res, next) => {
 });
 
 // 3) ROUTES
-//app.use('/api/v1/records', recordRoutes);
+app.use('/api/v1/records', recordRoutes);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Cant find ${req.originalUrl} on this server!`, 404));
