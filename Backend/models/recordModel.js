@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Record model schema
 const recordSchema = new mongoose.Schema({
   idNum: {
     type: String,
@@ -42,7 +43,7 @@ const recordSchema = new mongoose.Schema({
   modifiedAt: Date,
   deleted: {
     type: Boolean,
-    default: true,
+    default: false,
     select: false
   }
 });
@@ -57,7 +58,7 @@ recordSchema.pre('save', function(next) {
 
 // Query middleware to filter the records that have been deleted before any find operation
 recordSchema.pre(/^find/, function(next) {
-  this.find({ deleted: { $ne: false } });
+  this.find({ deleted: { $ne: true } });
   next();
 });
 

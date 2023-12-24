@@ -1,3 +1,4 @@
+// class which contains methods to filter, sort, limit and paginate data
 class APIFeatures {
   constructor(query, queryString) {
     this.query = query;

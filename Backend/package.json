@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon server.js",
-    "start:prod": "NODE_ENV=production nodemon server.js",
+    "start:prod": "SET NODE_ENV=production&&nodemon server.js",
     "debug": "ndb server.js"
   },
   "repository": {
@@ -15,12 +15,15 @@
   "author": "Akshat Goyal",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/vision": "^4.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.1.5",
     "helmet": "^7.1.0",
     "hpp": "^0.2.3",
+    "moment": "^2.29.4",
     "mongodb": "^6.2.0",
     "mongoose": "^5.5.2",
     "morgan": "^1.9.1",
