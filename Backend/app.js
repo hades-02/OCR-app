@@ -8,7 +8,7 @@ const hpp = require('hpp');
 
 const AppError = require('./utils/appError');
 const recordRoutes = require('./routes/recordRoutes');
-//const globalErrorHandler = require('./controllers/errorController');
+const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
@@ -42,12 +42,16 @@ app.use(xss());
 // Prevent parameter pollution
 app.use(
   hpp({
-    whitelist: []
+    whitelist: [
+      'idNum',
+      'name',
+      'lastName',
+      'dateOfBirth',
+      'dateOfIssue',
+      'dateOfExpiry'
+    ]
   })
 );
-
-// Serving static files
-app.use(express.static(`${__dirname}/public`));
 
 // Test middleware
 app.use((req, res, next) => {
@@ -63,6 +67,6 @@ app.all('*', (req, res, next) => {
 });
 
 // error middleware
-//app.use(globalErrorHandler);
+app.use(globalErrorHandler);
 
 module.exports = app;
