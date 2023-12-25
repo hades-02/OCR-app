@@ -15,6 +15,8 @@ https://documenter.getpostman.com/view/29218984/2s9Ykt4Jsx
 
 Website Link: https://qoala-ocr-25f72.web.app/
 
+API deployed using render takes some time to perform request after some time of inactivity. So please have patience while using the app, it may take some time to perform the first request.
+
 
 ## Deployment
 
