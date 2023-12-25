@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import HashLoader from "react-spinners/HashLoader";
 import uploadImageToCloudinary from "../utils/uploadCloudinary";
-import { BASE_URL } from "../config";
 import { toast } from "react-toastify";
 
 const Home = () => {
@@ -26,7 +24,7 @@ const Home = () => {
     setExtracting(true);
 
     try {
-      const res = await fetch(`${BASE_URL}/ocr`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ocr`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: selectedFile }),
@@ -72,7 +70,7 @@ const Home = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(`${BASE_URL}/`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

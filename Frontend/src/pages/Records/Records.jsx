@@ -1,11 +1,12 @@
-import { BASE_URL } from "../../config";
 import useGetRecords from "../../hooks/useFetchData";
 import RecordList from "../../components/Records/RecordList";
 import Error from "../../components/Error/Error";
 import Loading from "../../components/Loader/Loading";
 
 const Records = () => {
-  const { data, loading, error } = useGetRecords(`${BASE_URL}/`);
+  const { data, loading, error } = useGetRecords(
+    `${import.meta.env.VITE_BACKEND_URL}/`
+  );
 
   return (
     <>

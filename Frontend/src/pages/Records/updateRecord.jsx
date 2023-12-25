@@ -2,7 +2,6 @@ import HashLoader from "react-spinners/HashLoader";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { toast } from "react-toastify";
-import { BASE_URL } from "../../config";
 import useGetRecord from "../../hooks/useFetchData";
 import Loading from "../../components/Loader/Loading";
 import Error from "../../components/Error/Error";
@@ -11,7 +10,9 @@ import { useEffect, useState } from "react";
 const UpdateRecord = () => {
   const { id } = useParams();
 
-  const { data, loading, error } = useGetRecord(`${BASE_URL}/${id}`);
+  const { data, loading, error } = useGetRecord(
+    `${import.meta.env.VITE_BACKEND_URL}/${id}`
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -45,7 +46,7 @@ const UpdateRecord = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch(`${BASE_URL}/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

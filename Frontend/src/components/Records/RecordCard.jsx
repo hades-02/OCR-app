@@ -2,10 +2,8 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import HashLoader from "react-spinners/HashLoader";
-
 import { formatDate } from "../../utils/formatDate";
 import Modal from "../Modal/Modal";
-import { BASE_URL } from "../../config";
 import { useNavigate } from "react-router-dom";
 
 const RecordCard = ({ record }) => {
@@ -31,7 +29,7 @@ const RecordCard = ({ record }) => {
     setLoading(true);
 
     try {
-      await fetch(`${BASE_URL}/${record._id}`, {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/${record._id}`, {
         method: "DELETE",
       });
 
