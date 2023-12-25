@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const moment = require('moment');
 const vision = require('@google-cloud/vision');
 const { CREDENTIALS } = require('./googleVisionCredentials');
