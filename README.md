@@ -5,6 +5,10 @@ A web app which uses Google Vision API to extract data from Thai ID card and sto
 ReactJs is used to develop the frontend of this application.
 
 
+## Documentation
+
+[API Documentation]
+https://documenter.getpostman.com/view/29218984/2s9Ykt4Jsx
 
 
 ## Demo
