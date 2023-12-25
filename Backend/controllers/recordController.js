@@ -3,7 +3,10 @@ const APIFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const checkIFAllowed = require('../utils/checkIfAllowed');
+<<<<<<< HEAD
 const detectText = require('../utils/ocrService');
+=======
+>>>>>>> a35921303344189dbd5d01bcd6eca532d66b1705
 
 // controller function to extract and send data to client form the uploaded image
 exports.extractData = async (req, res, next) => {
