@@ -23,7 +23,8 @@ exports.extractData = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       status: 'error',
-      message: 'Error extracting data, please provide clear image',
+      message:
+        err.message || 'Error extracting data, please provide clear image',
       error: err
     });
   }

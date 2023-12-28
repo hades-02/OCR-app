@@ -10,10 +10,8 @@ const CONFIG = {
 // create google vision API client
 const client = new vision.ImageAnnotatorClient(CONFIG);
 
-function findIndexByText(array, targetText) {
-  return array.findIndex(item =>
-    item.toLowerCase().includes(targetText.toLowerCase())
-  );
+function findIndexByText(textArray, targetText) {
+  return textArray.findIndex(text => text.toLowerCase().includes(targetText));
 }
 
 function removeSubstring(inputString, substringToRemove) {
@@ -21,44 +19,68 @@ function removeSubstring(inputString, substringToRemove) {
 }
 
 function getDate(dateString) {
-  const dateObject = moment(dateString, 'DD MMM. YYYY');
-  return dateObject.format('YYYY-MM-DD');
+  const date = moment(dateString, 'DD MMM. YYYY');
+  return date.format('YYYY-MM-DD');
 }
 
 // function to extract data from thai id image
 const detectText = async imgUrl => {
   try {
     const [result] = await client.textDetection(imgUrl);
-    let temp = result.fullTextAnnotation.text;
+    let rawText = result.fullTextAnnotation.text;
 
     // Removing the Thai characters
     const thaiCharacterRegex = /[\u0E00-\u0E7F]/g;
-    temp = temp.replace(thaiCharacterRegex, '');
+    rawText = rawText.replace(thaiCharacterRegex, '');
 
-    let text = temp.split('\n');
+    let text = rawText.split('\n');
 
     // Remove empty strings and strings without any alphabet or numbers
     text = text.filter(item => item.trim() !== '' && /[a-zA-Z0-9]/.test(item));
 
-    const idNumIndex = findIndexByText(text, 'Thai National ID Card') + 1;
-    const idNum = text[idNumIndex];
+    // To extract identification number
+    const idNumIndex = findIndexByText(text, 'identification number') - 1;
+    let idNum = '';
+    if (idNumIndex !== -2) {
+      idNum = text[idNumIndex].trim();
+    }
 
-    const nameIndex = findIndexByText(text, 'Name');
-    const name = removeSubstring(text[nameIndex], 'Name ');
+    // To extract name
+    const nameIndex = findIndexByText(text, 'name');
+    let name = '';
+    if (nameIndex !== -1) {
+      name = removeSubstring(text[nameIndex], 'Name ').trim();
+    }
 
-    const lastNameIndex = findIndexByText(text, 'Last name');
-    const lastName = removeSubstring(text[lastNameIndex], 'Last name ');
+    // To extract last name
+    const lastNameIndex = findIndexByText(text, 'last name');
+    let lastName = '';
+    if (lastNameIndex !== -1) {
+      lastName = removeSubstring(text[lastNameIndex], 'Last name ').trim();
+    }
 
-    const issueIndex = findIndexByText(text, 'Date of Issue') - 1;
-    const dateOfIssue = getDate(text[issueIndex]);
+    // To extract date of issue
+    const issueIndex = findIndexByText(text, 'date of issue') - 1;
+    let dateOfIssue = '';
+    if (issueIndex !== -2) {
+      dateOfIssue = getDate(text[issueIndex]);
+    }
 
-    const expiryIndex = findIndexByText(text, 'Date of Expiry') - 1;
-    const dateOfExpiry = getDate(text[expiryIndex]);
+    // To extract date of expiry
+    const expiryIndex = findIndexByText(text, 'date of expiry') - 1;
+    let dateOfExpiry = '';
+    if (expiryIndex !== -2) {
+      dateOfExpiry = getDate(text[expiryIndex]);
+    }
 
-    const dobIndex = findIndexByText(text, 'Date of Birth');
-    const dateOfBirth = getDate(
-      removeSubstring(text[dobIndex], 'Date of Birth ')
-    );
+    // To extract date of birth
+    const dobIndex = findIndexByText(text, 'date of birth');
+    let dateOfBirth = '';
+    if (dateOfBirth !== -1) {
+      dateOfBirth = getDate(
+        removeSubstring(text[dobIndex], 'Date of Birth ').trim()
+      );
+    }
 
     const data = {
       idNum,
@@ -69,8 +91,8 @@ const detectText = async imgUrl => {
       dateOfExpiry
     };
     return data;
-  } catch (error) {
-    console.error('Error during text detection:', error.message);
+  } catch (err) {
+    console.error('Error during text detection:', err.message);
     return null; // Return null in case of an error
   }
 };
